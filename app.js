@@ -13,11 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use(errorMiddleware);
+
 app.use('/app/v1/user', userRouter);
 app.use('/app/v1/auth', authRouter);
 app.use('/app/v1/subcription', subcriptionRouter);
-
-app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Subcription Tracker API !');
