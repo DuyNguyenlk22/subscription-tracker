@@ -6,18 +6,20 @@ import subcriptionRouter from './routes/subcription.routes.js';
 import connectToDatabase from './database/mongodb.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import arcjetMiddleware from './middlewares/arcjet.middleware.js';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(arcjetMiddleware);
 
-app.use(errorMiddleware);
-
-app.use('/app/v1/user', userRouter);
+app.use('/app/v1/users', userRouter);
 app.use('/app/v1/auth', authRouter);
 app.use('/app/v1/subcription', subcriptionRouter);
+
+app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Subcription Tracker API !');
