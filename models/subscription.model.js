@@ -1,17 +1,17 @@
 import mongoose from 'mongoose';
 
-const subcriptionSchema = new mongoose.Schema(
+const subscriptionSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      require: [true, 'Subcription name is required'],
+      required: [true, 'Subcription name is required'],
       trim: true,
       minLength: 2,
       maxLength: 100,
     },
     price: {
       type: Number,
-      require: [true, 'Subcription price is required'],
+      required: [true, 'Subcription price is required'],
       min: [0, 'Price must be greater than 0'],
     },
     currency: {
@@ -39,7 +39,7 @@ const subcriptionSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
     },
     status: {
@@ -49,23 +49,27 @@ const subcriptionSchema = new mongoose.Schema(
     },
     startDate: {
       type: Date,
-      require: true,
+      required: true,
       validate: {
-        validator: (value) => value <= new Date(),
+        validator: function (value) {
+          return value <= new Date();
+        },
         message: 'Start date must be in the past',
       },
     },
     renewalDate: {
       type: Date,
       validate: {
-        validator: (value) => value > this.startDate,
+        validator: function (value) {
+          return value > this.startDate;
+        },
         message: 'Renewal date must be after the start date',
       },
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      require: true,
+      required: true,
       index: true,
     },
   },
@@ -73,7 +77,8 @@ const subcriptionSchema = new mongoose.Schema(
 );
 
 // Auto-calculate renewalDate if missing
-subcriptionSchema.pre('save', (next) => {
+// Don't using arrow function becasue it's not have pointer 'this'
+subscriptionSchema.pre('save', function () {
   if (!this.renewalDate) {
     const renewalPeriods = {
       daily: 1,
@@ -84,15 +89,13 @@ subcriptionSchema.pre('save', (next) => {
 
     this.renewalDate = new Date(this.startDate);
     this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriods[this.frequency]);
+  }
 
-    // Auto-update the status if renewalDate has passed
-    if (this.renewalDate < new Date()) {
-      this.status = 'expired';
-    }
-
-    next();
+  // Auto-update the status if renewalDate has passed
+  if (this.renewalDate < new Date()) {
+    this.status = 'expired';
   }
 });
 
-const Subcription = mongoose.model('Subcription', subcriptionSchema);
-export default Subcription;
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
+export default Subscription;

@@ -2,11 +2,12 @@ import express from 'express';
 import { PORT } from './config/env.js';
 import userRouter from './routes/user.routes.js';
 import authRouter from './routes/auth.routes.js';
-import subcriptionRouter from './routes/subcription.routes.js';
 import connectToDatabase from './database/mongodb.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import cookieParser from 'cookie-parser';
 import arcjetMiddleware from './middlewares/arcjet.middleware.js';
+import subscriptionRouter from './routes/subscription.routes.js';
+import workflowRouter from './routes/workflow.routes.js';
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use(arcjetMiddleware);
 
 app.use('/app/v1/users', userRouter);
 app.use('/app/v1/auth', authRouter);
-app.use('/app/v1/subcription', subcriptionRouter);
+app.use('/app/v1/subscriptions', subscriptionRouter);
+app.use('/app/v1/workflows', workflowRouter);
 
 app.use(errorMiddleware);
 

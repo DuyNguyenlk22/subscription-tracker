@@ -37,7 +37,7 @@ export const signUp = async (req, res, next) => {
       { session },
     );
 
-    const token = jwt.sign({ userId: newUser[0]._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign({ id: newUser[0]._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
     await session.commitTransaction();
     session.endSession();
@@ -89,5 +89,3 @@ export const signIn = async (req, res, next) => {
     next(error);
   }
 };
-
-export const signOut = (req, res, next) => {};
