@@ -53,7 +53,7 @@ export const generateEmailTemplate = ({
         <tr>
             <td style="background-color: #f0f7ff; padding: 20px; text-align: center; font-size: 14px;">
                 <p style="margin: 0 0 10px;">
-                    SubDub Inc. | 123 Main St, Anytown, AN 12345
+                    D-Sub Inc. | 123 Main St, Anytown, AN 12345
                 </p>
                 <p style="margin: 0;">
                     <a href="#" style="color: #4a90e2; text-decoration: none; margin: 0 10px;">Unsubscribe</a> | 
